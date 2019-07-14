@@ -5,6 +5,7 @@ import './App.css'
 import { Col, Row } from "antd"
 import Snapshots from './snapshots'
 import Graph from './graph'
+import Degree from './degree'
 
 let keyword;
 
@@ -14,7 +15,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       snapshots: [],
-      graph: {}
+      graph: {}, 
+      degree: {}
     }
   }
 
@@ -24,15 +26,17 @@ class App extends React.Component {
     
     this.setState({
       snapshots: snapshots, 
-      graph: snapshots[i].graph
+      graph: snapshots[i].graph, 
+      degree: snapshots[i].degree
     })
   }
 
   componentDidMount() {
-    d3.json('./test_data.json').then(snapshots => {
+    d3.json('./data.json').then(snapshots => {
       this.setState({
         snapshots: snapshots, 
-        graph: snapshots[0].graph
+        graph: snapshots[0].graph, 
+        degree: snapshots[0].degree
       })
     })
   }
@@ -40,17 +44,21 @@ class App extends React.Component {
   render() {
     const snapshots = this.state.snapshots
     const graph = this.state.graph
+    const degree = this.state.degree
 
     return (
       <div className="App">
         <Row>
-          <Col span={12}>
+          <Col span={4}>
+            <Degree degree={degree}/>
+          </Col>
+          <Col span={10}>
             <Snapshots 
               snapshots={snapshots} 
               onClick={i => this.handleClick(i)}
             />
           </Col>
-          <Col span={12}>
+          <Col span={10}>
             <Graph graph={graph} />
           </Col>
         </Row>

@@ -60,7 +60,7 @@ class Snapshots extends Component {
             .attr("r", 5)
             .attr("fill", "#a7cda9")
             .attr("stroke", "#d9dde2")
-            .on("mouseover", (d, i) => {
+            .on("click", (d, i) => {
                 //  console.log(d, i)
                 onClick(i);
             })

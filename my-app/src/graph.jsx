@@ -30,7 +30,7 @@ class Graph extends React.Component {
         link.exit().remove()
         link.enter()
             .append("line")
-            .attr("stroke", "#d9dde2")
+            .attr("stroke", "#828282")
         
         const node = graphSVG
             .select(".nodes")
@@ -77,8 +77,8 @@ class Graph extends React.Component {
     render() {
         return (
             <svg id="graph">
-                <g class="links"></g>
-                <g class="nodes"></g>
+                <g className="links"></g>
+                <g className="nodes"></g>
             </svg>
         )
     }
