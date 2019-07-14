@@ -2,6 +2,24 @@ import React, { Component } from "react"
 import * as d3 from "d3"
 
 class Graph extends React.Component {
+    componentDidMount() {
+        this.colo = {}
+        d3.json('./class.json').then(id => {
+            for (var key in id) {
+            if (id[key] == 'MP*1') {
+                this.colo[key] = '#1b9e77'
+            } else if (id[key] == 'PC*') {
+                this.colo[key] = '#d95f02'
+            } else if (id[key] == 'PC') {
+                this.colo[key] = '#7570b3'
+            } else if (id[key] == 'PSI*') {
+                this.colo[key] = '#e7298a'
+            } else {
+                this.colo[key] = '#66a61e'
+            }}
+        })
+    }
+
     componentWillReceiveProps(props) {
         // console.log('graph componentwillreceiveprops')
         const graph = props.graph
@@ -31,6 +49,7 @@ class Graph extends React.Component {
         link.enter()
             .append("line")
             .attr("stroke", "#828282")
+            .attr("stroke-width", (link) => Math.sqrt(link.weight))
         
         const node = graphSVG
             .select(".nodes")
@@ -39,7 +58,8 @@ class Graph extends React.Component {
         node.exit().remove()
         node.enter()
             .append("circle")
-            .attr("r", 5)
+            .attr("r", 3)
+            .attr("fill", (node) => this.colo[node.id])
         function ticked() {
             let max = {}
             let min = {}

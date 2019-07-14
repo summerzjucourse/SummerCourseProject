@@ -16,7 +16,9 @@ class App extends React.Component {
     this.state = {
       snapshots: [],
       graph: {}, 
-      degree: {}
+      degree: {}, 
+      dataMood: "PCA", 
+      colorMood: ""
     }
   }
 
@@ -31,14 +33,35 @@ class App extends React.Component {
     })
   }
 
-  componentDidMount() {
-    d3.json('./data.json').then(snapshots => {
-      this.setState({
-        snapshots: snapshots, 
-        graph: snapshots[0].graph, 
-        degree: snapshots[0].degree
-      })
+  changeDataMood(x) {
+    this.setState({
+      dataMood: x
     })
+  }
+  changeColorMood(x) {
+    this.setState({
+      colorMood: x
+    })
+  }
+
+  componentDidMount() {
+    if(this.state.dataMood == "PCA") {
+      d3.json('./data_PCA.json').then(snapshots => {
+        this.setState({
+          snapshots: snapshots, 
+          graph: snapshots[0].graph, 
+          degree: snapshots[0].degree
+        })
+      })
+    } else {
+      d3.json('./data_t-SNE.json').then(snapshots => {
+        this.setState({
+          snapshots: snapshots, 
+          graph: snapshots[0].graph, 
+          degree: snapshots[0].degree
+        })
+      })
+    }
   }
 
   render() {
@@ -50,7 +73,19 @@ class App extends React.Component {
       <div className="App">
         <Row>
           <Col span={4}>
-            <Degree degree={degree}/>
+            <Row>
+              <Col>
+                <Degree degree={degree}/>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {/* <Controler 
+                  changeDataMood={x => this.changeDataMood(x)}
+                  changeColorMood={x => this.changeColorMood(x)}
+                /> */}
+              </Col>
+            </Row>
           </Col>
           <Col span={10}>
             <Snapshots 

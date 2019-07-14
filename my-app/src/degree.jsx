@@ -18,7 +18,7 @@ class Degree extends React.Component {
         for(let i in countDegree) {
             if(countDegree[i] != 0) {
                 // console.log(countDegree[i])
-                dataset.push([i, countDegree[i]])
+                dataset.push([parseInt(i), countDegree[i]])
             }
         }
 
@@ -36,6 +36,7 @@ class Degree extends React.Component {
         const xScale = d3.scaleLinear()
               .domain([0, maxx])
               .range([0, width - padding.left - padding.right]);
+        console.log(maxx)
         const yScale = d3.scaleLinear()
               .domain([0, maxy])
               .range([height - padding.top - padding.bottom, 0]);

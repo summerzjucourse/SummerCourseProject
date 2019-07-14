@@ -57,7 +57,7 @@ class Snapshots extends Component {
             .append("circle")
             .attr("cx", d => xScale(d[0]))
             .attr("cy", d => yScale(d[1]))
-            .attr("r", 5)
+            .attr("r", 3)
             .attr("fill", "#a7cda9")
             .attr("stroke", "#d9dde2")
             .on("click", (d, i) => {
