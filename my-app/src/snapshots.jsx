@@ -7,11 +7,11 @@ class Snapshots extends Component {
     }
 
     componentDidMount(props) {
-        this.color = ['#d9d9d9', 
-            '#bdbdbd', 
-            '#969696', 
-            '#737373', 
-            '#525252']
+        // this.color = ['#d9d9d9', 
+        //     '#bdbdbd', 
+        //     '#969696', 
+        //     '#737373', 
+        //     '#525252']
         const snapshotSVG = d3.select("#snapshot")
         const width = snapshotSVG.node().parentNode.clientWidth
         snapshotSVG.attr("width", width).attr("height", width)
@@ -73,6 +73,12 @@ class Snapshots extends Component {
         // console.log('pointsData = ', pointsData);
         const pointsLength = pointsData.length;
         // console.log('pointsLength = ', pointsLength);
+
+        const colorMap = d3.interpolateRgb(
+            d3.rgb("#f7fbff"),
+            d3.rgb("#4292c6")
+        )
+
         const points = snapshotSVG.selectAll("circle").data(pointsData)
         points.exit().remove()
         points
@@ -81,8 +87,9 @@ class Snapshots extends Component {
             .attr("cx", d => xScale(d[0]))
             .attr("cy", d => yScale(d[1]))
             .attr("r", 4)
-            .attr("fill", (d, i) => this.color[ Math.floor(parseInt(i) * this.color.length / parseInt(pointsLength)) ])
-            .attr("stroke", "#d9dde2")
+            // .attr("fill", (d, i) => this.color[ Math.floor(parseInt(i) * this.color.length / parseInt(pointsLength)) ])
+            .attr("fill", (d)=> {return colorMap(d[0]/30)})
+            .attr("stroke", "#6e6e6e")
             .attr("stroke-width", 0.5)
             .on("click", (d, i) => {
                 //  console.log(d, i)
