@@ -27,8 +27,28 @@ class Graph extends React.Component {
                     colorKey['Others'] = '#e6ab02'
                 }
             }
+            console.log(colorKey);
+            let i = 0;
+            for(let name in colorKey) {
+                console.log(name);
+                graphSVG.append('text')
+                            .attr('x', width - i * 45 - 7)
+                            .attr('y', 20)
+                            .attr('style', "text-anchor: end")
+                            .attr('textLength', 30)
+                            .attr('lengthAdjust', 'spacing')
+                            .attr('font-size', 10)
+                            .text(name)
+                graphSVG.append('rect')
+                            .attr('x', width - i * 45 - 50)
+                            .attr('y', 10)
+                            .attr('width', 10)
+                            .attr('height', 10)
+                            .attr('style', "fill:" + colorKey[name] + ";stroke-width:1;stroke:rgb(0,0,0)")
+                i++;
+            }
         })
-        
+
         const graphSVG = d3.select("#graph")
         // console.log(graphSVG)
         const width = graphSVG.node().parentNode.clientWidth
@@ -43,25 +63,25 @@ class Graph extends React.Component {
                    .attr('stroke', 'black')
                    .attr('stroke-width', strokeWidth)
         
-        console.log(colorKey);
-        let i = 0;
-        for(let name in colorKey) {
-            console.log(name);
-            graphSVG.append('text')
-                        .attr('x', width - i * 65)
-                        .attr('y', 20)
-                        .attr('style', "text-anchor: end")
-                        .attr('textLength', 40)
-                        .attr('lengthAdjust', 'space')
-                        .text(name)
-            graphSVG.append('rect')
-                        .attr('x', width - i * 65 - 60)
-                        .attr('y', 20)
-                        .attr('width', 18)
-                        .attr('height', 18)
-                        .attr('style', "fill:" + colorKey[name] + ";stroke-width:1;stroke:rgb(0,0,0)")
-            i++;
-        }
+        // console.log(colorKey);
+        // let i = 0;
+        // for(let name in colorKey) {
+        //     console.log(name);
+        //     graphSVG.append('text')
+        //                 .attr('x', width - i * 65)
+        //                 .attr('y', 20)
+        //                 .attr('style', "text-anchor: end")
+        //                 .attr('textLength', 40)
+        //                 .attr('lengthAdjust', 'space')
+        //                 .text(name)
+        //     graphSVG.append('rect')
+        //                 .attr('x', width - i * 65 - 60)
+        //                 .attr('y', 20)
+        //                 .attr('width', 18)
+        //                 .attr('height', 18)
+        //                 .attr('style', "fill:" + colorKey[name] + ";stroke-width:1;stroke:rgb(0,0,0)")
+        //     i++;
+        // }
     }
 
     componentWillReceiveProps(props) {
