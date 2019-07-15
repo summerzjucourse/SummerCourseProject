@@ -6,6 +6,26 @@ class Snapshots extends Component {
         super(props)
     }
 
+    componentDidMount(props) {
+        this.color = ['#d9d9d9', 
+            '#bdbdbd', 
+            '#969696', 
+            '#737373', 
+            '#525252']
+        const snapshotSVG = d3.select("#snapshot")
+        const width = snapshotSVG.node().parentNode.clientWidth
+        snapshotSVG.attr("width", width).attr("height", width)
+        const strokeWidth = 2;
+        snapshotSVG.append('rect')
+                   .attr('x', strokeWidth)
+                   .attr('y', strokeWidth + 1)
+                   .attr('width', width - 2 * strokeWidth)
+                   .attr('height', width - 1 - 2 * strokeWidth)
+                   .attr('fill', 'none')
+                   .attr('stroke', 'black')
+                   .attr('stroke-width', strokeWidth)
+    }
+
     componentWillReceiveProps(props) {
         const snapshots = props.snapshots
         const onClick = props.onClick
@@ -47,9 +67,12 @@ class Snapshots extends Component {
             .attr("y1", d => yScale(d[0][1]))
             .attr("y2", d => yScale(d[1][1]))
             .attr("stroke", "#d9dde2")
-            .attr("stroke-width", 3)
+            .attr("stroke-width", 2)
 
         const pointsData = snapshots.map(snpst => snpst.vector)
+        // console.log('pointsData = ', pointsData);
+        const pointsLength = pointsData.length;
+        // console.log('pointsLength = ', pointsLength);
         const points = snapshotSVG.selectAll("circle").data(pointsData)
         points.exit().remove()
         points
@@ -57,9 +80,10 @@ class Snapshots extends Component {
             .append("circle")
             .attr("cx", d => xScale(d[0]))
             .attr("cy", d => yScale(d[1]))
-            .attr("r", 3)
-            .attr("fill", "#a7cda9")
+            .attr("r", 4)
+            .attr("fill", (d, i) => this.color[ Math.floor(parseInt(i) * this.color.length / parseInt(pointsLength)) ])
             .attr("stroke", "#d9dde2")
+            .attr("stroke-width", 0.5)
             .on("click", (d, i) => {
                 //  console.log(d, i)
                 onClick(i);

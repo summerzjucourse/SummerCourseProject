@@ -2,22 +2,66 @@ import React, { Component } from "react"
 import * as d3 from "d3"
 
 class Graph extends React.Component {
-    componentDidMount() {
+    componentDidMount(props) {
         this.colo = {}
+        let colorKey = {}
         d3.json('./class.json').then(id => {
-            for (var key in id) {
-            if (id[key] == 'MP*1') {
-                this.colo[key] = '#1b9e77'
-            } else if (id[key] == 'PC*') {
-                this.colo[key] = '#d95f02'
-            } else if (id[key] == 'PC') {
-                this.colo[key] = '#7570b3'
-            } else if (id[key] == 'PSI*') {
-                this.colo[key] = '#e7298a'
-            } else {
-                this.colo[key] = '#66a61e'
-            }}
+            for (let key in id) {
+                if (id[key] == 'MP*1') {
+                    this.colo[key] = '#1b9e77'
+                    colorKey['MP*1'] = '#1b9e77'
+                } else if (id[key] == 'PC*') {
+                    this.colo[key] = '#d95f02'
+                    colorKey['PC*'] = '#d95f02'
+                } else if (id[key] == 'PC') {
+                    this.colo[key] = '#7570b3'
+                    colorKey['PC'] = '#7570b3'
+                } else if (id[key] == 'PSI*') {
+                    this.colo[key] = '#e7298a'
+                    colorKey['PSI*'] = '#e7298a'
+                } else if (id[key] == 'MP*2') {
+                    this.colo[key] = '#66a61e'
+                    colorKey['MP*2'] = '#66a61e'
+                } else {
+                    this.colo[key] = '#e6ab02'
+                    colorKey['Others'] = '#e6ab02'
+                }
+            }
         })
+        const graphSVG = d3.select("#graph")
+        // console.log(graphSVG)
+        const width = graphSVG.node().parentNode.clientWidth
+        graphSVG.attr("width", width).attr("height", width)
+        const strokeWidth = 2;
+        graphSVG.append('rect')
+                   .attr('x', strokeWidth)
+                   .attr('y', strokeWidth + 1)
+                   .attr('width', width - 2 * strokeWidth)
+                   .attr('height', width - 1 - 2 * strokeWidth)
+                   .attr('fill', 'none')
+                   .attr('stroke', 'black')
+                   .attr('stroke-width', strokeWidth)
+        // const graphInfoSVG = d3.select('#graph')
+        // const width = graphSVG.node().parentNode.clientWidth
+        console.log(colorKey);
+        let i = 0;
+        for(let name in colorKey) {
+            console.log(name);
+            graphSVG.append('text')
+                        .attr('x', width - i * 65)
+                        .attr('y', 20)
+                        .attr('style', "text-anchor: end")
+                        .attr('textLength', 40)
+                        .attr('lengthAdjust', 'space')
+                        .text(name)
+            graphSVG.append('rect')
+                        .attr('x', width - i * 65 - 60)
+                        .attr('y', 20)
+                        .attr('width', 18)
+                        .attr('height', 18)
+                        .attr('style', "fill:" + colorKey[name] + ";stroke-width:1;stroke:rgb(0,0,0)")
+            i++;
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -58,7 +102,7 @@ class Graph extends React.Component {
         node.exit().remove()
         node.enter()
             .append("circle")
-            .attr("r", 3)
+            .attr("r", 4)
             .attr("fill", (node) => this.colo[node.id])
         function ticked() {
             let max = {}

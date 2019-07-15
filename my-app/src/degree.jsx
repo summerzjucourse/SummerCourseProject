@@ -22,7 +22,7 @@ class Degree extends React.Component {
             }
         }
 
-        console.log(dataset);
+        // console.log(dataset);
 
         const maxy = d3.max(dataset, d => d[1])
         const miny = d3.min(dataset, d => d[1])
@@ -36,7 +36,7 @@ class Degree extends React.Component {
         const xScale = d3.scaleLinear()
               .domain([0, maxx])
               .range([0, width - padding.left - padding.right]);
-        console.log(maxx)
+        // console.log(maxx)
         const yScale = d3.scaleLinear()
               .domain([0, maxy])
               .range([height - padding.top - padding.bottom, 0]);
