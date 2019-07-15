@@ -28,6 +28,7 @@ class Graph extends React.Component {
                 }
             }
         })
+        
         const graphSVG = d3.select("#graph")
         // console.log(graphSVG)
         const width = graphSVG.node().parentNode.clientWidth
@@ -41,8 +42,7 @@ class Graph extends React.Component {
                    .attr('fill', 'none')
                    .attr('stroke', 'black')
                    .attr('stroke-width', strokeWidth)
-        // const graphInfoSVG = d3.select('#graph')
-        // const width = graphSVG.node().parentNode.clientWidth
+        
         console.log(colorKey);
         let i = 0;
         for(let name in colorKey) {
