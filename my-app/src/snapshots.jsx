@@ -70,14 +70,18 @@ class Snapshots extends Component {
             .attr("stroke-width", 2)
 
         const pointsData = snapshots.map(snpst => snpst.vector)
-        // console.log('pointsData = ', pointsData);
-        const pointsLength = pointsData.length;
-        // console.log('pointsLength = ', pointsLength);
+        // // console.log('pointsData = ', pointsData);
+        // const pointsLength = pointsData.length;
+        // // console.log('pointsLength = ', pointsLength);
 
         const colorMap = d3.interpolateRgb(
             d3.rgb("#f7fbff"),
             d3.rgb("#4292c6")
         )
+
+        let count = 0
+        let thispoint
+        let prevpoint
 
         const points = snapshotSVG.selectAll("circle").data(pointsData)
         points.exit().remove()
@@ -91,9 +95,23 @@ class Snapshots extends Component {
             .attr("fill", (d)=> {return colorMap(d[0]/30)})
             .attr("stroke", "#6e6e6e")
             .attr("stroke-width", 0.5)
-            .on("click", (d, i) => {
+            .on("click", function(d, i) {
                 //  console.log(d, i)
                 onClick(i);
+                count++
+                if (count === 1) {
+                    thispoint = d3.select(this)
+                    thispoint.attr("stroke", "#db3030")
+                             .attr("stroke-width", 2)
+                }
+                else
+                {
+                    prevpoint = thispoint
+                    prevpoint.attr("stroke", "#d9dde2")
+                    thispoint = d3.select(this)
+                    thispoint.attr("stroke", "#db3030")
+                             .attr("stroke-width", 2)
+                }
             })
     }
     render() {
