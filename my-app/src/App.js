@@ -6,6 +6,7 @@ import { Col, Row } from "antd"
 import Snapshots from './snapshots'
 import Graph from './graph'
 import Degree from './degree'
+import Controler from './Controler'
 
 let keyword;
 
@@ -18,7 +19,7 @@ class App extends React.Component {
       graph: {}, 
       degree: {}, 
       dataMood: "PCA", 
-      colorMood: ""
+      colorMood: "BLUE"
     }
   }
 
@@ -34,10 +35,32 @@ class App extends React.Component {
   }
 
   changeDataMood(x) {
+
+    if(x === this.state.dataMood) return;
+    console.log(x);
+    if(x === "PCA") {
+      d3.json('./data_PCA.json').then(snapshots => {
+        this.setState({
+          snapshots: snapshots, 
+          graph: snapshots[0].graph, 
+          degree: snapshots[0].degree
+        })
+      })
+    } else { console.log(x);
+      d3.json('./data_t-SNE.json').then(snapshots => { console.log("*****")
+        this.setState({
+          snapshots: snapshots, 
+          graph: snapshots[0].graph, 
+          degree: snapshots[0].degree
+        })
+      })
+    }
     this.setState({
       dataMood: x
     })
   }
+
+
   changeColorMood(x) {
     this.setState({
       colorMood: x
@@ -45,7 +68,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if(this.state.dataMood == "PCA") {
+    if(this.state.dataMood === "PCA") {
       d3.json('./data_PCA.json').then(snapshots => {
         this.setState({
           snapshots: snapshots, 
@@ -80,10 +103,13 @@ class App extends React.Component {
             </Row>
             <Row>
               <Col>
-                {/* <Controler 
-                  changeDataMood={x => this.changeDataMood(x)}
-                  changeColorMood={x => this.changeColorMood(x)}
-                /> */}
+                <Controler 
+                  changeDataMoodPCA={() => this.changeDataMood('PCA')}
+                  changeDataMoodTSNE={() => this.changeDataMood('t-SNE')}
+                  changeColorMoodBLUE={() => this.changeColorMood('BLUE')}
+                  changeColorMoodRED={() => this.changeColorMood('RED')}
+                  changeColorMoodPURPLE={() => this.changeColorMood('PURPLE')}
+                />
               </Col>
             </Row>
           </Col>
@@ -91,6 +117,7 @@ class App extends React.Component {
             <Snapshots 
               snapshots={snapshots} 
               onClick={i => this.handleClick(i)}
+              colorMood={this.state.colorMood}
             />
           </Col>
           <Col span={10}>
